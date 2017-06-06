@@ -3,12 +3,8 @@ angular.module('myApp')
         .config(['$routeProvider', 'ChartJsProvider', function ($routeProvider, ChartJsProvider) {
                 // Configure all charts
                 ChartJsProvider.setOptions({
-                    chartColors: ['#FF5252', '#FF8A80'],
+                    chartColors: ['#FF5252'],
                     responsive: false
-                });
-                // Configure all line charts
-                ChartJsProvider.setOptions('line', {
-                    showLines: false
                 });
 
                 $routeProvider.when('/temperatura', {
@@ -17,30 +13,31 @@ angular.module('myApp')
                 });
             }])
 
-        .controller("TemperaturaCtrl", ['$scope', '$timeout', TemperaturaCtrl]);
+        .controller("TemperaturaCtrl", ['$scope', '$http', '$timeout', TemperaturaCtrl]);
 
-function TemperaturaCtrl($scope, $timeout) {
-    $scope.labels = ["January", "February", "March", "April", "May", "June", "July"];
-    $scope.series = ['Series A', 'Series B'];
-    $scope.data = [
-        [65, 59, 80, 81, 56, 55, 40],
-        [28, 48, 40, 19, 86, 27, 90]
-    ];
-    $scope.onClick = function (points, evt) {
-        console.log(points, evt);
-    };
-    
-    var aux = 0;
-    
+function TemperaturaCtrl($scope, $http, $timeout) {
+    $scope.labels = ["January", "February", "March", "April"];
+    $scope.series = ['Series A'];
+    $scope.data = [0, 0, 0, 0];
+
+    function getVelocidade(callback) {
+        $http.get('http://192.168.1.177/')
+                .success(function (data, status, header, config) {
+                    callback(data.velocidade);
+                })
+                .error(function (data, status, header, config) {
+                    console.log('Erro ao carregar os dados!');
+                });
+    }
+
     function wrapper() {
-        $scope.data = [
-            [aux, 48, 40, 19, 86, 27, 90],
-            [65, 59, 80, 81, 56, 55, 40]
-        ];
-        aux += 10;
-        $timeout(wrapper, 3000);
+        getVelocidade(function (vel) {
+            console.log(vel);
+            $scope.data = [vel, 20, 15, 2];
+            $timeout(wrapper, 2000);
+        });
     }
 
     // Simulate async data update
-    $timeout(wrapper, 3000);
+    $timeout(wrapper, 2000);
 }

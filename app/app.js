@@ -1,7 +1,7 @@
 angular.module('myApp', ['ngRoute', 'chart.js'])
         .config(['$locationProvider', '$routeProvider', function ($locationProvider, $routeProvider) {
                 $locationProvider.hashPrefix('!');
-                $routeProvider.otherwise({redirectTo: '/view1'});
+                $routeProvider.otherwise({redirectTo: '/temperatura'});
             }])
 
         .factory('appConfig', function () {

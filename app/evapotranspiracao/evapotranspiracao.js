@@ -1,4 +1,5 @@
 angular.module('myApp')
+
         .config(['$routeProvider', function ($routeProvider) {
                 $routeProvider.when('/evapotranspiracao', {
                     templateUrl: 'evapotranspiracao/evapotranspiracao.html',
@@ -10,7 +11,7 @@ angular.module('myApp')
 
 function EvapotranspiracaoCtrl($scope, $http, appConfig) {
     var carrega = function () {
-        $http.get(appConfig.serverApiBaseUrl + '/fornecedor')
+        $http.get('http://192.168.1.177/')
                 .success(function (data, status, header, config) {
                     $scope.fornecedores = data;
                     console.log(data);
