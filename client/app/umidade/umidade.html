@@ -1,0 +1,30 @@
+<div class="container">
+    <h3><span class="glyphicon glyphicon-scale" aria-hidden="true"></span>
+        Histórico de Umidade</h3>
+    <div class="row">
+        <div class='col-sm-6'>
+            <div class="form-group">
+                <h5>Data inicial</h5>
+                <div class="input-group date" data-provide="datepicker">
+                    <input ng-model="dados.data_inicial" type="text" class="form-control">
+                    <div class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </div>
+                </div>
+                <h5>Data final</h5>
+                <div class="input-group date" data-provide="datepicker">
+                    <input ng-model="dados.data_final" type="text" class="form-control">
+                    <div class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </div>
+                </div>
+                <br>
+                <button type="button" class="btn btn-primary" ng-click="postHistorico()" ng-disabled="!dados.data_inicial || !dados.data_final">Enviar</button>
+            </div>
+        </div>
+    </div>
+    <canvas height="300" width="600" class="chart chart-line" chart-data="data" chart-labels="labels" 
+            chart-series="series" chart-click="onClick">
+    </canvas>
+</div>
+

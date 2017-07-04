@@ -1,0 +1,22 @@
+<div class="container">
+    <h3><span class="glyphicon glyphicon-tint" aria-hidden="true"></span>
+        Registrar Irrigação
+    </h3>
+    <div class="row">
+        <div class='col-sm-6'>
+            <div class="form-group">
+                <h5>Data de irrigação</h5>
+                <div class="input-group date" data-provide="datepicker">
+                    <input ng-model="dados.data" type="text" class="form-control">
+                    <div class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </div>
+                </div>
+                <h5>Selecione a cultura:</h5>
+                <select ng-model="dados.cultura" class="form-control" ng-options="cultura as cultura.nome for cultura in culturas| orderBy:'nome' track by cultura.id" ng-model="selected"></select>
+                <br>
+                <button type="button" class="btn btn-primary" ng-click="postIrrigacao()" ng-disabled="!dados.data || !dados.cultura">Enviar</button>
+            </div>
+        </div>
+    </div>
+</div>

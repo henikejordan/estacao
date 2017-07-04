@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<!--[if gt IE 8]><!--> <html lang="en" ng-app="myApp" class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Evapotranspiração</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- Bootstrap -->
+        <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+
+        <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+        <script type="text/javascript" src="bower_components/moment/min/moment.min.js"></script>
+        <script type="text/javascript" src="bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+        <script type="text/javascript" src="bootstrap-datepicker/dist/locales/bootstrap-datepicker.pt-BR.min.js"></script>
+        <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" />
+    </head>
+    <body>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">Estação Meterológica</a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Temperatura <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#!/temperatura_real">Tempo real</a></li>
+                                <li><a href="#!/temperatura">Histórico</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Umidade <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#!/umidade_real">Tempo real</a></li>
+                                <li><a href="#!/umidade">Histórico</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Velocidade <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#!/velocidade_real">Tempo real</a></li>
+                                <li><a href="#!/velocidade">Histórico</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#!/evapotranspiracao">Evapotranspiração</a></li>
+                        <li><a href="#!/irrigacao">Registrar Irrigação</a></li>
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+        </nav>
+
+        <div ng-view></div>
+
+        <!-- In production use:
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
+        -->
+        <script src="bower_components/angular/angular.js"></script>
+        <script src="bower_components/angular-route/angular-route.js"></script>
+        <script src="bower_components/chart.js/dist/Chart.min.js"></script>
+        <script src="bower_components/angular-chart.js/dist/angular-chart.min.js"></script>
+        <script src="app.js"></script>
+        <script src="evapotranspiracao/evapotranspiracao.js"></script>
+        <script src="irrigacao/irrigacao.js"></script>
+        <script src="temperatura/temperatura.js"></script>
+        <script src="temperatura_real/temperatura_real.js"></script>
+        <script src="umidade/umidade.js"></script>
+        <script src="umidade_real/umidade_real.js"></script>
+        <script src="velocidade/velocidade.js"></script>
+        <script src="velocidade_real/velocidade_real.js"></script>
+        <script src="bootstrap/js/bootstrap.min.js"></script>
+    </body>
+</html>
