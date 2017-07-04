@@ -23,7 +23,7 @@ function VelocidadeRealCtrl($scope, $http, $timeout) {
     $scope.data = [];
 
     function getVelocidade(callback) {
-        $http.get('http://localhost/estacao/server/public/socket/dados')
+        $http.get('http://localhost/estacao/server/public/dados')
                 .success(function (data, status, header, config) {
                     callback(data);
                 })
