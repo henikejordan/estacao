@@ -10,7 +10,7 @@ class DadosController extends Controller {
 
     public function getHistorico(Request $request) {
         $data_inicial = date("Y-m-d", strtotime($request->data_inicial));
-        $data_final = date("Y-m-d", strtotime($request->data_final));
+        $data_final = date("Y-m-d", strtotime("+1 days", date(strtotime($request->data_final))));
 
         $dados = \App\Dados::where('created_at', '>=', $data_inicial)
                 ->where('created_at', '<=', $data_final)
@@ -95,65 +95,95 @@ class DadosController extends Controller {
 
         $model = new \App\ETc;
         $model->ll = $solo['cad'] * $cult['f'] * $cult['z'];
+        $count = 0;
+        $total = 0;
 
+        //calcula a média para ETc != 0
         for ($i = 0; $i < $intervalo->days; $i++) {
             $diainf = date("Y-m-d", strtotime($i . " days", strtotime($dataIrrig)));
             $diasup = date("Y-m-d", strtotime(($i + 1) . " days", strtotime($dataIrrig)));
 
-            $temp = DB::table('dados')
-                    ->where('created_at', '>=', $diainf)
-                    ->where('created_at', '<=', $diasup)
-                    ->avg('temperatura');
-
-            $tmax = DB::table('dados')
-                    ->where('created_at', '>=', $diainf)
-                    ->where('created_at', '<=', $diasup)
-                    ->max('temperatura');
-
-            $tmin = DB::table('dados')
-                    ->where('created_at', '>=', $diainf)
-                    ->where('created_at', '<=', $diasup)
-                    ->min('temperatura');
-
-            $umidade = DB::table('dados')
-                    ->where('created_at', '>=', $diainf)
-                    ->where('created_at', '<=', $diasup)
-                    ->min('umidade');
-
-            $vel2 = DB::table('dados')
-                    ->where('created_at', '>=', $diainf)
-                    ->where('created_at', '<=', $diasup)
-                    ->min('velocidade_vento');
-
-            if (!is_null($temp)) {
-                $calcula = new Calcula;
-                $etc = $calcula->ETo($temp, $tmax, $tmin, $umidade, $vel2, $altitude, $latitude, $j, $reg) * $kc[0];
+            $etc = $this->ETc($diainf, $diasup, $altitude, $latitude, $j, $reg, $kc);
+            if ($etc > 0) {
+                $count++;
+                $total += $etc;
             }
+        }
+        $medEtc = $total / $count;
+        $i = 0;
 
-            if ($i > 0) {
-                $etc_vet[$i] = $etc_vet[$i - 1] - $etc;
+        //gera os dados para os gráficos de ETc
+        for ($i = 0; $i < $intervalo->days; $i++) {
+            $etc_vet[$i] = 0;
+
+            $diainf = date("Y-m-d", strtotime($i . " days", strtotime($dataIrrig)));
+            $diasup = date("Y-m-d", strtotime(($i + 1) . " days", strtotime($dataIrrig)));
+
+            $etc = $this->ETc($diainf, $diasup, $altitude, $latitude, $j, $reg, $kc);
+
+            if ($i == 0) {
+                $etc_vet[$i] = $model->ll;
             } else {
-                $etc_vet[$i] = $model->ll - $etc;
-            }
-
-            if ($etc_vet[$i] < 0) {
-                $etc_vet[$i] = 0;
+                if ($etc > 0) {
+                    $etc_vet[$i] = $etc_vet[$i - 1] - $etc;
+                } else {
+                    $etc_vet[$i] = $etc_vet[$i - 1] - $medEtc;
+                }
             }
 
             $created_vet[$i] = $diainf;
+
+            if ($etc_vet[$i] < 0) {
+                $etc_vet[$i] = 0;
+                break;
+            }
         }
 
         $model->etc = $etc_vet;
         $model->created = $created_vet;
         $model->lb = $model->ll / $metodo->eficiencia;
 
-        if ($etc_vet[$intervalo->days - 1] == 0) {
+        if ($etc_vet[$i] == 0) {
             $model->opcao = "Precisa irrigar";
         } else {
             $model->opcao = "Não precisa irrigar";
         }
 
         return $model;
+    }
+
+    private function ETc($diainf, $diasup, $altitude, $latitude, $j, $reg, $kc) {
+        $temp = DB::table('dados')
+                ->where('created_at', '>=', $diainf)
+                ->where('created_at', '<=', $diasup)
+                ->avg('temperatura');
+
+        $tmax = DB::table('dados')
+                ->where('created_at', '>=', $diainf)
+                ->where('created_at', '<=', $diasup)
+                ->max('temperatura');
+
+        $tmin = DB::table('dados')
+                ->where('created_at', '>=', $diainf)
+                ->where('created_at', '<=', $diasup)
+                ->min('temperatura');
+
+        $umidade = DB::table('dados')
+                ->where('created_at', '>=', $diainf)
+                ->where('created_at', '<=', $diasup)
+                ->min('umidade');
+
+        $vel2 = DB::table('dados')
+                ->where('created_at', '>=', $diainf)
+                ->where('created_at', '<=', $diasup)
+                ->min('velocidade_vento');
+
+        if (!is_null($temp)) {
+            $calcula = new Calcula;
+            return $calcula->ETo($temp, $tmax, $tmin, $umidade, $vel2, $altitude, $latitude, $j, $reg) * $kc[0];
+        }
+
+        return 0;
     }
 
 }
