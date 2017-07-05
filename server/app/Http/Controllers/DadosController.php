@@ -6,9 +6,11 @@ use Illuminate\Http\Request;
 use Vinelab\Http\Client as HttpClient;
 use Illuminate\Support\Facades\DB;
 
-class DadosController extends Controller {
+class DadosController extends Controller 
+{
 
-    public function getHistorico(Request $request) {
+    public function getHistorico(Request $request) 
+    {
         $data_inicial = date("Y-m-d", strtotime($request->data_inicial));
         $data_final = date("Y-m-d", strtotime("+1 days", date(strtotime($request->data_final))));
 
@@ -19,25 +21,29 @@ class DadosController extends Controller {
         return $dados;
     }
 
-    public function getCulturas() {
+    public function getCulturas() 
+    {
         $culturas = \App\Cultura::all();
 
         return $culturas;
     }
 
-    public function getSolos() {
+    public function getSolos() 
+    {
         $solos = \App\Solo::all();
 
         return $solos;
     }
 
-    public function getMetodos() {
+    public function getMetodos() 
+    {
         $metodos = \App\Metodo::all();
 
         return $metodos;
     }
 
-    public function getDados() {
+    public function getDados() 
+    {
         $client = new HttpClient;
         $response = $client->get('http://192.168.1.177');
         $partes = explode(";", $response->content());
@@ -51,7 +57,8 @@ class DadosController extends Controller {
         return $dados;
     }
 
-    public function postIrrigacao(Request $request) {
+    public function postIrrigacao(Request $request) 
+    {
         $data = date("Y-m-d", strtotime($request->data));
         $cult = $request->cultura;
         $cultura = \App\Cultura::find($cult['id']);
@@ -59,7 +66,8 @@ class DadosController extends Controller {
         $cultura->save();
     }
 
-    public function evapotranspiracao(Request $request) {
+    public function evapotranspiracao(Request $request) 
+    {
         $etc = 0;
         //ponta grossa altitude 969m
         $altitude = $request->altitude;
@@ -110,8 +118,8 @@ class DadosController extends Controller {
             }
         }
         $medEtc = $total / $count;
-        $i = 0;
-
+        
+        $indice = 0;
         //gera os dados para os gráficos de ETc
         for ($i = 0; $i < $intervalo->days; $i++) {
             $etc_vet[$i] = 0;
@@ -135,6 +143,7 @@ class DadosController extends Controller {
 
             if ($etc_vet[$i] < 0) {
                 $etc_vet[$i] = 0;
+                $indice = $i;
                 break;
             }
         }
@@ -143,7 +152,7 @@ class DadosController extends Controller {
         $model->created = $created_vet;
         $model->lb = $model->ll / $metodo->eficiencia;
 
-        if ($etc_vet[$i] == 0) {
+        if ($etc_vet[$indice] == 0) {
             $model->opcao = "Precisa irrigar";
         } else {
             $model->opcao = "Não precisa irrigar";
@@ -152,7 +161,8 @@ class DadosController extends Controller {
         return $model;
     }
 
-    private function ETc($diainf, $diasup, $altitude, $latitude, $j, $reg, $kc) {
+    private function ETc($diainf, $diasup, $altitude, $latitude, $j, $reg, $kc) 
+    {
         $temp = DB::table('dados')
                 ->where('created_at', '>=', $diainf)
                 ->where('created_at', '<=', $diasup)
