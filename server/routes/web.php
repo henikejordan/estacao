@@ -15,7 +15,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/calcula', "CalculaController@ETo");
 Route::post('/historico', "DadosController@getHistorico");
 Route::get('/culturas', "DadosController@getCulturas");
 Route::get('/solos', "DadosController@getSolos");

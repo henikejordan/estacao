@@ -12,7 +12,14 @@ angular.module('myApp')
 function EvapotranspiracaoCtrl($scope, $http, $timeout) {
     $timeout.cancel();
 
-    $scope.irrigar;
+    $scope.opcao;
+    $scope.ll;
+    $scope.lb;
+
+    $scope.labels = [];
+    $scope.series = ['ETc'];
+    $scope.data = [];
+
     $scope.metodos = [];
     $scope.culturas = [];
     $scope.solos = [];
@@ -54,7 +61,19 @@ function EvapotranspiracaoCtrl($scope, $http, $timeout) {
     $scope.postEvapotranspiracao = function () {
         $http.post('http://localhost/estacao/server/public/evapotranspiracao', $scope.dados)
                 .success(function (data, status, header, config) {
-                    $scope.irrigar = data;
+                    $scope.opcao = data.opcao;
+                    $scope.ll = data.ll;
+                    $scope.lb = data.lb;
+
+                    $scope.labels = [];
+                    $scope.series = ['ETc'];
+                    $scope.data = [];
+                    data.etc.forEach(function (element, index, array) {
+                        $scope.data.push(element);
+                    });
+                    data.created.forEach(function (element, index, array) {
+                        $scope.labels.push(element);
+                    });
                 })
                 .error(function (data, status, header, config) {
                     console.log('Erro ao carregar os dados!');

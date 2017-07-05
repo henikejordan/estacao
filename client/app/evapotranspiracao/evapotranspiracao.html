@@ -6,7 +6,7 @@
         <div class='col-sm-6'>
             <div class="form-group">
                 <h5>Selecione o método de irrigação:</h5>
-                <select ng-model="dados.metodo" class="form-control" ng-options="metodo as metodo.nome for metodo in metodos| orderBy:'nome' track by metodo.id" ng-model="selected"></select>
+                <select ng-model="dados.metodo" class="form-control" ng-options="metodo as metodo.nome group by metodo.grupo for metodo in metodos| orderBy:'nome' track by metodo.id" ng-model="selected"></select>
                 <h5>Selecione a cultura:</h5>
                 <select ng-model="dados.cultura" class="form-control" ng-options="cultura as cultura.nome for cultura in culturas| orderBy:'nome' track by cultura.id" ng-model="selected"></select>
                 <h5>Selecione o estádio de desenvolvimento:</h5>
@@ -48,8 +48,11 @@
                         ng-disabled="!dados.metodo || !dados.cultura || !dados.estadio || !dados.solo ||
                                     !dados.altitude || !dados.graus || !dados.minutos || !dados.regiao">Verificar</button>
                 <br>
-                <h3>{{irrigar}}</h3>
+                <h3>{{opcao}}</h3>
             </div>
         </div>
     </div>
+    <canvas height="300" width="600" class="chart chart-line" chart-data="data" chart-labels="labels" 
+            chart-series="series" chart-click="onClick">
+    </canvas>
 </div>
