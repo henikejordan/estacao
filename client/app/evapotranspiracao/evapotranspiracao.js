@@ -1,13 +1,18 @@
 angular.module('myApp')
 
-        .config(['$routeProvider', function ($routeProvider) {
+        .config(['$routeProvider', 'ChartJsProvider', function ($routeProvider, ChartJsProvider) {
+                // Configure all charts
+                ChartJsProvider.setOptions({
+                    chartColors: ['#00988c']
+                });
+                
                 $routeProvider.when('/evapotranspiracao', {
                     templateUrl: 'evapotranspiracao/evapotranspiracao.html',
                     controller: 'EvapotranspiracaoCtrl'
                 });
             }])
 
-        .controller('EvapotranspiracaoCtrl', EvapotranspiracaoCtrl);
+        .controller('EvapotranspiracaoCtrl', ['$scope', '$http', '$timeout', EvapotranspiracaoCtrl]);
 
 function EvapotranspiracaoCtrl($scope, $http, $timeout) {
     $timeout.cancel();

@@ -48,9 +48,13 @@
                         ng-disabled="!dados.metodo || !dados.cultura || !dados.estadio || !dados.solo ||
                                     !dados.altitude || !dados.graus || !dados.minutos || !dados.regiao">Verificar</button>
                 <br>
-                <h3>{{opcao}}</h3>
-                <h3>Lâmina Líquida: {{ll}}</h3>
-                <h3>Lâmina Bruta: {{lb}}</h3>
+                <br>
+                <h5 ng-show="ll">Lâmina Líquida:</h5>
+                <input ng-show="ll" type="text" class="form-control" value="{{ll}}">
+                <h5 ng-show="lb">Lâmina Bruta:</h5>
+                <input ng-show="lb" type="text" class="form-control" value="{{lb}}">
+                <br>
+                <h4>{{opcao}}</h4>
             </div>
         </div>
     </div>

@@ -17,6 +17,8 @@ angular.module('myApp')
 function IrrigacaoCtrl($scope, $http, $timeout) {
     $timeout.cancel();
 
+    $scope.sucesso;
+    $scope.erro;
     $scope.culturas = [];
 
     getCulturas();
@@ -34,10 +36,10 @@ function IrrigacaoCtrl($scope, $http, $timeout) {
     $scope.postIrrigacao = function () {
         $http.post('http://localhost/estacao/server/public/irrigacao', $scope.dados)
                 .success(function (data, status, header, config) {
-                    console.log('Dados enviados com sucesso!');
+                    $scope.sucesso = 'Dados enviados com sucesso!';
                 })
                 .error(function (data, status, header, config) {
-                    console.log('Erro ao carregar os dados!');
+                    $scope.erro = 'Erro ao carregar os dados!';
                 });
     };
 }

@@ -117,7 +117,12 @@ class DadosController extends Controller
                 $total += $etc;
             }
         }
-        $medEtc = $total / $count;
+        
+        $medEtc = 0;
+        
+        if($count > 0) {
+            $medEtc = $total / $count;
+        }
         
         $indice = 0;
         //gera os dados para os gráficos de ETc

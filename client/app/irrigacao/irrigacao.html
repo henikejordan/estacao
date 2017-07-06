@@ -2,6 +2,16 @@
     <h3><span class="glyphicon glyphicon-tint" aria-hidden="true"></span>
         Registrar Irrigação
     </h3>
+    <div class="alert alert-success" role="alert" ng-show="sucesso">
+        <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
+        <span class="sr-only">Success:</span>
+        {{sucesso}}
+    </div>
+    <div class="alert alert-danger" role="alert" ng-show="erro">
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+        <span class="sr-only">Error:</span>
+        {{erro}}
+    </div>
     <div class="row">
         <div class='col-sm-6'>
             <div class="form-group">
