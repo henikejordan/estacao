@@ -186,12 +186,12 @@ class DadosController extends Controller
         $umidade = DB::table('dados')
                 ->where('created_at', '>=', $diainf)
                 ->where('created_at', '<=', $diasup)
-                ->min('umidade');
+                ->avg('umidade');
 
         $vel2 = DB::table('dados')
                 ->where('created_at', '>=', $diainf)
                 ->where('created_at', '<=', $diasup)
-                ->min('velocidade_vento');
+                ->avg('velocidade_vento');
 
         if (!is_null($temp)) {
             $calcula = new Calcula;
