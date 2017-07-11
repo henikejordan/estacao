@@ -7,7 +7,8 @@ class Calcula
 
     public function ETo($temp, $tmax, $tmin, $umidade, $vel2, $altitude, $latitude, $j, $reg) 
     {           
-        return (0.408 * $this->delta($temp) * ($this->rn($temp, $tmin, $tmax, $umidade, $altitude, $latitude, $j, $reg) - 0) + (($this->gama($altitude) * 900 * $vel2 * ($this->es($temp) - $this->ea($temp, $umidade))) / ($temp + 273))) /
+        return (0.408 * $this->delta($temp) * ($this->rn($temp, $tmin, $tmax, $umidade, $altitude, $latitude, $j, $reg) - 0) + 
+                (($this->gama($altitude) * 900 * $vel2 * ($this->es($temp) - $this->ea($temp, $umidade))) / ($temp + 273))) /
                 ($this->delta($temp) + $this->gama($altitude) * (1 + 0.34 * $vel2));
     }
 
@@ -59,7 +60,8 @@ class Calcula
 
     public function ra($latitude, $j) 
     {        
-        return 118.08 / pi() * $this->dr($j) * ($this->ws($latitude, $j) * sin($latitude) * sin($this->lambda($j)) + cos($latitude) * cos($this->lambda($j) * sin($this->ws($latitude, $j))));
+        return 118.08 / pi() * $this->dr($j) * ($this->ws($latitude, $j) * sin($latitude) * sin($this->lambda($j)) + 
+                cos($latitude) * cos($this->lambda($j) * sin($this->ws($latitude, $j))));
     }
 
     public function rs($tmin, $tmax, $latitude, $j, $reg) 
